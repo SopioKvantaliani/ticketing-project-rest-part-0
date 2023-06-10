@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController //if we have only @Controller annotation we need to return view
@@ -20,6 +21,7 @@ public class UserController {
     }
 
     @GetMapping
+    @RolesAllowed({"Manager", "Admin"}) // Totally depends on the business logic.
     public ResponseEntity <ResponseWrapper> getUsers (){
         List <UserDTO> userDTOList = userService.listAllUsers();
         return ResponseEntity.ok(new ResponseWrapper("Users are successfully retrieves", userDTOList, HttpStatus.OK));
@@ -29,6 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
+    @RolesAllowed("Admin")
     public ResponseEntity <ResponseWrapper> getUserByUserName (@PathVariable("username") String username){ //PathVariable should match the endPoint and it will be assigned to String username;
         UserDTO user = userService.findByUserName(username);
         return ResponseEntity.ok(new ResponseWrapper("User is successfully retrieved", user, HttpStatus.OK ));
@@ -36,6 +39,7 @@ public class UserController {
     }
 
     @PostMapping
+    @RolesAllowed("Admin")
     public ResponseEntity <ResponseWrapper> createUser (@RequestBody UserDTO user){ //UserDTO comes from API and to capture we need to use @RequestBody annotation
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body
@@ -44,12 +48,14 @@ public class UserController {
     }
 
     @PutMapping
+    @RolesAllowed("Admin")
     public ResponseEntity <ResponseWrapper> updateUser (@RequestBody UserDTO user){
         userService.update(user);
         return ResponseEntity.ok
                 (new ResponseWrapper("User is successfully updated", user, HttpStatus.OK ));
     }
     @DeleteMapping("/{username}")
+    @RolesAllowed("Admin")
     public ResponseEntity <ResponseWrapper> deleteUser (@PathVariable("username") String userName){
         userService.delete(userName);
         return ResponseEntity.ok
