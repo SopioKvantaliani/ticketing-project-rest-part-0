@@ -2,4 +2,3 @@ INSERT INTO roles(insert_date_time, insert_user_id, is_deleted, last_update_date
 VALUES ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Admin'),
        ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Manager'),
        ('2022-01-05 00:00:00', 1, false, '2022-01-05 00:00:00', 1, 'Employee');
-
