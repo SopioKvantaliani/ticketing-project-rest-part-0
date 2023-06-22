@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude (JsonInclude.Include.NON_NULL) //if the value is null do not show.
+@Builder //we need this annotation not to get error after adding GlobalExceptionHandler;
 public class ResponseWrapper {
 
     private boolean success;

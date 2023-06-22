@@ -1,7 +1,9 @@
 package com.cydeo.controller;
 
+import com.cydeo.annotation.ExecutionTime;
 import com.cydeo.dto.ResponseWrapper;
 import com.cydeo.dto.UserDTO;
+import com.cydeo.exception.TicketingProjectException;
 import com.cydeo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +28,7 @@ public class UserController {
     @GetMapping
     @RolesAllowed({"Manager", "Admin"}) // Totally depends on the business logic.
    @Operation(summary = "Get users")
+    @ExecutionTime //my annotation
     public ResponseEntity <ResponseWrapper> getUsers (){
         List <UserDTO> userDTOList = userService.listAllUsers();
         return ResponseEntity.ok(new ResponseWrapper("Users are successfully retrieved", userDTOList, HttpStatus.OK));
@@ -34,6 +37,7 @@ public class UserController {
          */
     }
 
+    @ExecutionTime//my annotation to see execution time
     @GetMapping("/{username}")
     @RolesAllowed("Admin")
     @Operation(summary = "Get user by username")
@@ -64,8 +68,8 @@ public class UserController {
     @DeleteMapping("/{username}")
     @RolesAllowed("Admin")
     @Operation(summary = "delete user")
-    public ResponseEntity <ResponseWrapper> deleteUser (@PathVariable("username") String userName){
-        userService.delete(userName);
+    public ResponseEntity <ResponseWrapper> deleteUser (@PathVariable("username") String userName) throws TicketingProjectException {
+        userService.delete (userName);
         return ResponseEntity.ok
                 (new ResponseWrapper("User is successfully deleted", userName, HttpStatus.OK ));
     }
